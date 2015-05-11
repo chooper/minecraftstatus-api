@@ -14,7 +14,7 @@ class AppTestCase(unittest.TestCase):
         assert '404 NOT FOUND' == rv.status
 
     def test_playersonline_noserver_404s(self):
-        rv = self.app.get('/playersonline/')
+        rv = self.app.get('//playersonline/')
         assert '404 NOT FOUND' == rv.status
 
     # TODO(charles) test mocked responses

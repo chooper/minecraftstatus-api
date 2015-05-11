@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os,socket
-from flask import Flask,jsonify
+from flask import Flask,jsonify,abort
 from mcstatus import MinecraftServer
 
 app = Flask(__name__)
@@ -9,13 +9,19 @@ app = Flask(__name__)
 def query_server(server):
     """Query the minecraft server"""
     server = MinecraftServer.lookup(server)
-    return server.query()
+    try:
+        response = server.query()
+    except socket.timeout:
+      return None
+    else:
+      return response
 
 
 @app.route("/<server>", methods=['GET'])
 def server_main(server):
     """Get full response of minecraft query"""
     response = query_server(server)
+    if not response: abort(503)
     return jsonify(raw=response.raw,players=response.players.names)
 
 
@@ -23,6 +29,7 @@ def server_main(server):
 def players(server):
     """Query online players from server"""
     response = query_server(server)
+    if not response: abort(503)
     return jsonify(players=list(response.players.names))
 
 

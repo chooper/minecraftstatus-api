@@ -72,7 +72,7 @@ $ curl http://api.minecraft.server.net/players
 
 Today, there are only two routes registered:
 
-* `/<server>` - Used to return the full query payload. A response looks like this:
+* `GET /<server>` - Used to return the full query payload. A response looks like this:
 
     ```
     {
@@ -94,7 +94,7 @@ Today, there are only two routes registered:
     }
     ```
 
-* `/<server>/players` - Used to return only the list of online players. A response looks like this:
+* `GET /<server>/players` - Used to return only the list of online players. A response looks like this:
 
     ```
     {

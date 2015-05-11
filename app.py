@@ -15,15 +15,15 @@ def query_server(server):
 @app.route("/<server>", methods=['GET'])
 def server_main(server):
     """Get full response of minecraft query"""
-    query = query_server(server)
-    return jsonify(raw=query.raw,players=query.players.names)
+    response = query_server(server)
+    return jsonify(raw=response.raw,players=response.players.names)
 
 
 @app.route("/<server>/players", methods=['GET'])
 def players(server):
     """Query online players from server"""
-    query = query_server(server)
-    return jsonify(players=list(query.players.names))
+    response = query_server(server)
+    return jsonify(players=list(response.players.names))
 
 
 if __name__ == '__main__':

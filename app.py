@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os
+import os,socket
 from flask import Flask,jsonify
 from mcstatus import MinecraftServer
 
@@ -12,6 +12,13 @@ def query_server(server):
     return server.query()
 
 
+@app.route("/<server>", methods=['GET'])
+def server_main(server):
+    """Get full response of minecraft query"""
+    query = query_server(server)
+    return jsonify(raw=query.raw,players=query.players.names)
+
+
 @app.route("/<server>/players", methods=['GET'])
 def players(server):
     """Query online players from server"""
@@ -21,5 +28,12 @@ def players(server):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', '5000'))
+
+    if os.environ.get('DEBUG', '0') == '1':
+        app.debug = True
+
+    timeout_secs = float(os.environ.get('TIMEOUT', '3'))
+    socket.setdefaulttimeout(timeout_secs)
+
     app.run(host='0.0.0.0', port=port)
 

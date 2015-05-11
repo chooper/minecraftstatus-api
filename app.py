@@ -6,8 +6,8 @@ from mcstatus import MinecraftServer
 
 app = Flask(__name__)
 
-@app.route("/playersonline/<server>", methods=['GET'])
-def playersonline(server):
+@app.route("/<server>/players", methods=['GET'])
+def players(server):
     server = MinecraftServer.lookup(server)
     query = server.query()
     return jsonify(players=list(query.players.names))
